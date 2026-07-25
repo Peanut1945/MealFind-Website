@@ -1,0 +1,72 @@
+# Builds the static export and publishes it to GitHub Pages.
+#
+# Requires Settings → Pages → Source = "GitHub Actions". Leaving it on the
+# default "Deploy from a branch" makes Pages run Jekyll instead, which ignores
+# this workflow entirely and serves README.md as the homepage.
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  # Lets you re-run a deploy from the Actions tab without pushing a commit.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never let two deploys race; queue instead. `cancel-in-progress: false` so a
+# deploy that is already publishing is allowed to finish.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Configure Pages
+        id: pages
+        uses: actions/configure-pages@v6
+
+      # A project site is served from /<repo>/, a user site (<user>.github.io)
+      # from the root. `configure-pages` reports which, but spells the root case
+      # "/" — and a bare "/" would make every asset path start "//", which a
+      # browser reads as protocol-relative. Normalise it to an empty string.
+      - name: Resolve base path
+        id: base
+        run: |
+          path='${{ steps.pages.outputs.base_path }}'
+          [ "$path" = "/" ] && path=''
+          echo "path=${path%/}" >> "$GITHUB_OUTPUT"
+
+      - run: npm ci
+
+      - run: npm run build
+        env:
+          # Prefixes <Link> hrefs, _next/* bundles and everything via asset().
+          NEXT_PUBLIC_BASE_PATH: ${{ steps.base.outputs.path }}
+          # Drives metadataBase, canonical URLs, OG tags, sitemap.xml, JSON-LD.
+          NEXT_PUBLIC_SITE_URL: ${{ steps.pages.outputs.base_url }}
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

@@ -1,5 +1,7 @@
 import Image from 'next/image';
 
+import { asset } from '@/lib/asset';
+
 /**
  * A real screenshot of the app, sized to fill a `<PhoneMockup>` screen.
  *
@@ -23,7 +25,8 @@ export function PhoneScreenshot({
 }) {
   return (
     <Image
-      src={src}
+      // Prefixed here rather than in `SCREENS` so the map stays plain paths.
+      src={asset(src)}
       alt=""
       width={443}
       height={960}
