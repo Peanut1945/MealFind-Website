@@ -1,0 +1,116 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   Design tokens.
+   Mirrors `src/lib/tokens.ts` — keep the two in sync.
+   Tailwind v4 generates utilities straight from these custom properties, so
+   `--color-forest` gives you `bg-forest`, `text-forest`, `border-forest`, etc.
+--------------------------------------------------------------------------- */
+@theme {
+  /* Surfaces */
+  --color-cream: #f5f3ec;
+  --color-cream-deep: #efede3;
+  --color-paper: #ffffff;
+
+  /* Brand greens */
+  --color-forest: #1f3d2b;
+  --color-forest-dark: #162c1f;
+  --color-moss: #3f5f4a;
+
+  /* In-app screen greens */
+  --color-app-green: #c9e4a4;
+  --color-app-green-light: #dcedc1;
+  --color-app-green-deep: #a8d178;
+  --color-lime-accent: #b7e36b;
+
+  /* Type + lines */
+  --color-ink: #25302a;
+  --color-ink-muted: #6b7a70;
+  --color-line: #e2dfd3;
+
+  /* Families are bound to the next/font CSS variables set in layout.tsx */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-inter-tight), var(--font-inter), ui-sans-serif, sans-serif;
+  --font-accent: var(--font-instrument-serif), ui-serif, Georgia, serif;
+
+  /* Radii */
+  --radius-card: 1.25rem;
+  --radius-phone: 2.75rem;
+  --radius-screen: 2.25rem;
+
+  /* Shadows */
+  --shadow-card: 0 1px 2px rgb(31 61 43 / 0.04), 0 8px 24px -12px rgb(31 61 43 / 0.12);
+  --shadow-float: 0 2px 6px rgb(31 61 43 / 0.06), 0 18px 40px -18px rgb(31 61 43 / 0.28);
+  --shadow-phone: 0 40px 80px -32px rgb(31 61 43 / 0.45), 0 8px 24px -12px rgb(31 61 43 / 0.25);
+
+  /* Page rhythm */
+  --spacing-section: 7rem;
+}
+
+/* ---------------------------------------------------------------------------
+   Base
+--------------------------------------------------------------------------- */
+@layer base {
+  html {
+    /* Lenis drives scrolling; native smooth-scroll would fight it. The
+       `scroll-behavior: smooth` fallback is applied only when Lenis is absent
+       (i.e. reduced-motion users) via the .no-lenis class set in SmoothScroll. */
+    -webkit-text-size-adjust: 100%;
+  }
+
+  html.no-lenis {
+    scroll-behavior: smooth;
+  }
+
+  /* Anchor targets clear the sticky nav. */
+  :target,
+  [id] {
+    scroll-margin-top: 6rem;
+  }
+
+  body {
+    background-color: var(--color-cream);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    /* Parallax layers translate beyond their box; never let that widen the page. */
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background-color: var(--color-app-green);
+    color: var(--color-forest);
+  }
+
+  /* Visible, on-brand focus ring for keyboard users only. */
+  :focus-visible {
+    outline: 2px solid var(--color-forest);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Utilities
+--------------------------------------------------------------------------- */
+@utility text-balance-heading {
+  text-wrap: balance;
+}
+
+/* ---------------------------------------------------------------------------
+   Motion safety.
+   Belt-and-braces: components already branch on `useReducedMotion`, but this
+   neutralises anything that slips through (including third-party CSS).
+--------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
