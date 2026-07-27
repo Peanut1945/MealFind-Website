@@ -3,7 +3,6 @@ import { Inter, Inter_Tight, Instrument_Serif } from 'next/font/google';
 
 import { Analytics } from '@/components/Analytics';
 import { SmoothScroll } from '@/components/motion/SmoothScroll';
-import { asset } from '@/lib/asset';
 import { siteConfig } from '@/lib/site';
 import { colors } from '@/lib/tokens';
 
@@ -114,20 +113,20 @@ export const metadata: Metadata = {
    * serving that as MealFind's mark would be worse than leaving pre-2013
    * browsers without one. Everything in support today reads PNG icons.
    *
-   * Prefixed with `asset()`, unlike the Open Graph images above. Next resolves
-   * `openGraph`/`twitter` URLs against `metadataBase`, but emits `icons` and
-   * `manifest` verbatim — so on a sub-path deployment these are the two fields
-   * that 404 unless they carry the base path themselves.
+   * Root-relative, like every other `public/` reference. Next resolves
+   * `openGraph`/`twitter` URLs against `metadataBase` but emits `icons` and
+   * `manifest` verbatim, which is correct here because the site is served from
+   * the domain root — see the note in next.config.ts.
    */
   icons: {
     icon: [
-      { url: asset('/icon-32.png'), type: 'image/png', sizes: '32x32' },
-      { url: asset('/icon-192.png'), type: 'image/png', sizes: '192x192' },
-      { url: asset('/icon-512.png'), type: 'image/png', sizes: '512x512' },
+      { url: '/icon-32.png', type: 'image/png', sizes: '32x32' },
+      { url: '/icon-192.png', type: 'image/png', sizes: '192x192' },
+      { url: '/icon-512.png', type: 'image/png', sizes: '512x512' },
     ],
-    apple: [{ url: asset('/apple-touch-icon.png'), sizes: '180x180' }],
+    apple: [{ url: '/apple-touch-icon.png', sizes: '180x180' }],
   },
-  manifest: asset('/site.webmanifest'),
+  manifest: '/site.webmanifest',
   robots: {
     index: true,
     follow: true,

@@ -1,6 +1,5 @@
 import Image from 'next/image';
 
-import { asset } from '@/lib/asset';
 import { cn } from '@/lib/cn';
 
 /**
@@ -29,7 +28,7 @@ export function LogoMark({
 }) {
   return (
     <Image
-      src={asset('/logo-mark.png')}
+      src="/logo-mark.png"
       alt={alt}
       width={160}
       height={160}

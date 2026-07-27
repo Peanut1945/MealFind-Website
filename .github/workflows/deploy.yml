@@ -3,6 +3,10 @@
 # Requires Settings → Pages → Source = "GitHub Actions". Leaving it on the
 # default "Deploy from a branch" makes Pages run Jekyll instead, which ignores
 # this workflow entirely and serves README.md as the homepage.
+#
+# The site is served from the root of mealfind.co.uk (Settings → Pages → Custom
+# domain, kept in sync by `public/CNAME`). That means the build must NOT be
+# given a base path or a github.io site URL — see the note below.
 name: Deploy to GitHub Pages
 
 on:
@@ -33,29 +37,24 @@ jobs:
           node-version: 22
           cache: npm
 
+      # Kept only to ensure Pages is enabled for the repo.
+      #
+      # ⚠️ Do not feed this step's `base_path` / `base_url` outputs into the
+      # build. They describe the repository's *project site*
+      # (`/MealFind-Website`, `https://peanut1945.github.io/MealFind-Website`)
+      # and keep doing so after a custom domain is attached. Passing them to
+      # Next bakes `/MealFind-Website/...` into every asset URL, which 404s at
+      # the domain root and serves the site with no CSS and no images. The
+      # custom domain is the root, so the build needs no prefix at all.
       - name: Configure Pages
-        id: pages
         uses: actions/configure-pages@v6
-
-      # A project site is served from /<repo>/, a user site (<user>.github.io)
-      # from the root. `configure-pages` reports which, but spells the root case
-      # "/" — and a bare "/" would make every asset path start "//", which a
-      # browser reads as protocol-relative. Normalise it to an empty string.
-      - name: Resolve base path
-        id: base
-        run: |
-          path='${{ steps.pages.outputs.base_path }}'
-          [ "$path" = "/" ] && path=''
-          echo "path=${path%/}" >> "$GITHUB_OUTPUT"
 
       - run: npm ci
 
+      # No NEXT_PUBLIC_BASE_PATH: assets stay root-relative (`/_next/...`).
+      # No NEXT_PUBLIC_SITE_URL either — the canonical origin lives in
+      # `src/lib/site.ts` so it can't drift from what the build actually uses.
       - run: npm run build
-        env:
-          # Prefixes <Link> hrefs, _next/* bundles and everything via asset().
-          NEXT_PUBLIC_BASE_PATH: ${{ steps.base.outputs.path }}
-          # Drives metadataBase, canonical URLs, OG tags, sitemap.xml, JSON-LD.
-          NEXT_PUBLIC_SITE_URL: ${{ steps.pages.outputs.base_url }}
 
       - uses: actions/upload-pages-artifact@v5
         with:

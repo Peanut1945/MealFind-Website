@@ -25,13 +25,27 @@ These are the things deliberately left as placeholders.
 
 | What | Where | Why it matters |
 | --- | --- | --- |
-| **Production URL** | `NEXT_PUBLIC_SITE_URL` env var, or the fallback in `src/lib/site.ts` | Set to `https://mealfind.co.uk`. Drives the canonical URL, Open Graph tags, `sitemap.xml` and JSON-LD. Wrong here means wrong everywhere. |
+| **Production URL** | `siteConfig.url` in `src/lib/site.ts` (override with `NEXT_PUBLIC_SITE_URL`) | Set to `https://mealfind.co.uk`. Drives the canonical URL, Open Graph tags, `sitemap.xml` and JSON-LD. Wrong here means wrong everywhere. Keep it in step with `public/CNAME`. |
 | **App Store / Play links** | `siteConfig.links` in `src/lib/site.ts` | While these are `#`, the store buttons render inert rather than linking nowhere. Set them and they activate automatically. |
 | **Beta signup** | `siteConfig.links.beta` / `.betaEmail` in `src/lib/site.ts` | Nav and hero scroll to the closing section; its button opens a `mailto:` to `siteConfig.email`. Swap `betaEmail` for a real form or waitlist URL when you have one. |
 | **Supermarket list** | `siteConfig.retailers` | Named on the home page and in the OG card. Only add a name once its prices are actually live in the app — this is a factual claim about the product. |
 | **Legal copy** | `src/app/{privacy,cookies,terms}/page.tsx` | Structured placeholders listing the sections each document needs. All three are `noindex` until filled in — remove that, and add them back to `src/app/sitemap.ts`. |
 | **Twitter handle** | `siteConfig.twitter` | Unverified — remove the key if the account doesn't exist. |
 | **Analytics** | `CF_ANALYTICS_TOKEN` in `src/lib/site.ts` | Cloudflare Web Analytics (free, cookieless — no consent banner needed). Until the token is set, no tracking script is rendered at all. Create the site under Analytics & Logs → Web Analytics in the Cloudflare dashboard, copy the token out of the snippet it offers, and rebuild. |
+
+### Where it's hosted
+
+GitHub Pages, built and published by `.github/workflows/deploy.yml`, served from
+the **root** of `mealfind.co.uk`.
+
+Root-hosting is an invariant the build depends on: every asset URL is
+root-relative (`/_next/...`, `/logo-mark.png`), so `next.config.ts` sets no
+`basePath` and no `assetPrefix`, and the workflow passes no
+`NEXT_PUBLIC_BASE_PATH`. Setting any of them prefixes every stylesheet, script
+and image with a sub-path that doesn't exist on the domain — the page loads,
+but with no CSS and no images. `public/CNAME` pins the custom domain so a deploy
+can't drop it, and `public/.nojekyll` stops Pages' Jekyll fallback stripping
+`_next/`.
 
 ### Claims on this site
 

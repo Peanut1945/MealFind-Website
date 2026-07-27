@@ -1,20 +1,17 @@
 import type { NextConfig } from 'next';
 
 /**
- * Sub-path the site is served from, without a trailing slash — `''` for a
- * domain root, `/MealFind-Website` for a GitHub Pages project site.
+ * The site is served from the root of its own domain (mealfind.co.uk), so
+ * there is deliberately no `basePath` / `assetPrefix` here.
  *
- * Env-driven so the same tree builds for both: `npm run dev` and `npm run
- * build` stay at the root, and only CI (which sets NEXT_PUBLIC_BASE_PATH)
- * builds the prefixed variant. Moving to mealfind.co.uk later means dropping
- * the variable, not editing code.
- *
- * Exported because `basePath` is a build-time constant that Next only applies
- * to `<Link>` and `_next/*` assets — anything pointing at `public/` by hand
- * has to prefix itself. See `src/lib/asset.ts`.
+ * ⚠️ Do not reintroduce them. They were added when the site lived at the
+ * GitHub Pages project URL (`peanut1945.github.io/MealFind-Website/`), and
+ * they are baked into the HTML at build time: with a base path set, every
+ * stylesheet, script and image is emitted as `/MealFind-Website/...`, which
+ * 404s at the domain root and leaves the page unstyled with broken images.
+ * A sub-path build is only ever correct if the site is actually served from
+ * that sub-path.
  */
-export const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
-
 const nextConfig: NextConfig = {
   /**
    * Fully static output — `npm run build` emits `out/`, deployable to any
@@ -25,14 +22,10 @@ const nextConfig: NextConfig = {
    */
   output: 'export',
 
-  basePath,
-  assetPrefix: basePath,
-
   images: {
     // Required by `output: 'export'` — there is no server to optimise on.
-    // The placeholder art ships as SVG (resolution-independent, ~1KB each), so
-    // nothing is lost here. Swap in real PNG/WEBP screenshots and they'll be
-    // served as-is; export them at 2x the rendered size.
+    // Screenshots are served exactly as they ship in `public/screens/`, so
+    // export them at 2x the size they render at.
     unoptimized: true,
   },
 
