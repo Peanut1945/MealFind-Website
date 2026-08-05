@@ -13,8 +13,8 @@ export function WhatIsMealFind() {
             <p>
               MealFind is a recipe app that knows what things cost. Find meals
               worth cooking, see the whole recipe priced at each supermarket,
-              shop from one list, and watch the nutrition and the savings add up
-              — all in one place, and free to use.
+              shop from one list, and watch the nutrition and the savings add
+              up, all in one place, and free to use.
             </p>
           </IconCard>
         </RevealItem>

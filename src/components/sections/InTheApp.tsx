@@ -15,13 +15,13 @@ const FEATURES = [
   {
     icon: Sparkle,
     title: 'AI Sous Chef',
-    body: 'Stuck mid-recipe? Ask. It explains a technique, rescues a split sauce, or talks a nervous beginner through a step — like a calm colleague, not a chatbot.',
+    body: 'Stuck mid-recipe? Ask. It explains a technique, rescues a split sauce, or talks a nervous beginner through a step, like a calm colleague rather than a chatbot.',
     tint: 'lime' as const,
   },
   {
     icon: HeartPulse,
     title: 'Nutrition that adds up',
-    body: 'Protein, fibre, carbs and calories on every recipe, tracked across the week — calculated from ingredient data, not guessed.',
+    body: 'Protein, fibre, carbs and calories on every recipe, tracked across the week, calculated from ingredient data rather than guessed.',
     tint: 'sage' as const,
   },
   {

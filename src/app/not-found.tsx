@@ -8,7 +8,7 @@ import { ArrowRight } from '@/components/ui/icons';
 
 /*
  * Next injects `noindex` on 404 responses automatically, so only the title
- * needs declaring — it picks up the root layout's `%s — MealFind` template.
+ * needs declaring — it picks up the root layout's `%s - MealFind` template.
  */
 export const metadata: Metadata = {
   title: 'Page not found',
@@ -51,9 +51,9 @@ export default function NotFound() {
         </h1>
 
         <p className="mx-auto mt-5 max-w-md text-[0.9375rem] leading-relaxed text-ink-muted">
-          This page isn&rsquo;t on the list — it may have moved, or the link
-          you followed is out of date. Everything worth cooking is still on the
-          home page.
+          This page isn&rsquo;t on the list. It may have moved, or the link you
+          followed is out of date. Everything worth cooking is still on the home
+          page.
         </p>
 
         <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">

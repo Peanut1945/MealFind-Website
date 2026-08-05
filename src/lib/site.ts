@@ -25,7 +25,7 @@ const CF_ANALYTICS_TOKEN: string = '';
 export const siteConfig = {
   name: 'MealFind',
   /** Used as the browser-tab title template and the OG site name. */
-  title: 'MealFind — Good food, priced right',
+  title: 'MealFind - Good food, priced right',
   tagline: 'The recipe app that knows what things cost',
 
   /**
@@ -38,7 +38,7 @@ export const siteConfig = {
    */
   slogan: 'Plan well. Eat well. Live well.',
   description:
-    'MealFind prices whole recipes, not single products: plan a week of meals, see what each one costs at Tesco, Sainsbury’s and ASDA, and shop from one list. Chef-reviewed recipes, nutrition tracking and UK supermarket price comparison in one free app.',
+    'MealFind prices whole recipes, not single products: plan a week of meals, see what each one costs at Tesco, Sainsbury’s and ASDA, and shop from one list. Recipe discovery, nutrition tracking and UK supermarket price comparison in one free app.',
   url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://mealfind.co.uk',
   locale: 'en_GB',
   twitter: '@mealfindapp',

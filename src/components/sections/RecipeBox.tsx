@@ -6,7 +6,6 @@ import { ParallaxLayer } from '@/components/motion/ParallaxLayer';
 import { Reveal, RevealItem } from '@/components/motion/Reveal';
 import { PhoneMockup } from '@/components/phone/PhoneMockup';
 import { PhoneScreenshot, SCREENS } from '@/components/phone/PhoneScreenshot';
-import { FloatingLabel } from '@/components/ui/FloatingLabel';
 import { ScriptAccent } from '@/components/ui/ScriptAccent';
 
 /** The app's own browse categories and filters. */
@@ -55,18 +54,6 @@ export function RecipeBox() {
                 <PhoneScreenshot src={SCREENS.discover.src} />
               </PhoneMockup>
             </ParallaxLayer>
-
-            {/* The floating price tag rides at a different depth from the phone. */}
-            <ParallaxLayer
-              track={sectionRef}
-              speed={132}
-              drift={-18}
-              className="pointer-events-none absolute -top-2 right-2 hidden sm:block lg:right-auto lg:-left-6"
-            >
-              <Reveal direction="right">
-                <FloatingLabel tone="forest">Chef reviewed</FloatingLabel>
-              </Reveal>
-            </ParallaxLayer>
           </div>
 
           {/* Copy */}
@@ -89,18 +76,18 @@ export function RecipeBox() {
                 <p className="mt-6 max-w-md text-[0.9375rem] leading-relaxed text-ink-muted">
                   Browse a personalised feed, search the library, or filter by
                   cost, protein, fibre, cook time or ingredient count. Every
-                  recipe is checked by a professional chef before it reaches
-                  you &mdash; for technique, for realistic timings, and for
-                  allergens.
+                  recipe carries its full ingredient list, timings and macros
+                  up front, so you know what you are committing to before you
+                  start.
                 </p>
               </RevealItem>
 
               <RevealItem>
-                <ul className="mt-8 flex flex-wrap gap-2">
+                <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2">
                   {FEATURE_TAGS.map((tagLabel) => (
                     <li
                       key={tagLabel}
-                      className="rounded-full border border-forest/15 bg-cream px-4 py-2 text-[0.8125rem] font-medium text-forest/80"
+                      className="text-[0.8125rem] font-medium text-forest/80"
                     >
                       {tagLabel}
                     </li>

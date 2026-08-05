@@ -120,7 +120,7 @@ export function Hero() {
             className="pointer-events-none absolute bottom-[24%] left-[calc(50%-14rem)] hidden sm:block lg:left-[calc(50%-17.5rem)]"
           >
             <Reveal direction="right" delay={0.68} trigger="mount">
-              <FloatingLabel leading={<span aria-hidden>&pound;</span>} tone="lime">
+              <FloatingLabel leading={<span aria-hidden>&pound;</span>}>
                 Priced by supermarket
               </FloatingLabel>
             </Reveal>

@@ -34,9 +34,9 @@ export function FinalCTA() {
 
         <RevealItem>
           <p className="mx-auto mt-5 max-w-md text-center text-[0.9375rem] leading-relaxed text-ink-muted">
-            Version 1.0 is being tested right now. Email us and we&rsquo;ll add
-            you to the next round &mdash; and tell us what you cook, because the
-            beta is where we find out what to build next.
+            Version 1.2 is being tested right now. Email us and we&rsquo;ll add
+            you to the next round. Tell us what you cook, because the beta is
+            where we find out what to build next.
           </p>
         </RevealItem>
 
@@ -125,7 +125,7 @@ function StoreButton({ href, live, logo, caption, store }: StoreButtonProps) {
     return (
       <span
         className={`${className} cursor-default opacity-55`}
-        aria-label={`${store} — coming soon`}
+        aria-label={`${store}, coming soon`}
       >
         {content}
       </span>

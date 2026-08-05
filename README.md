@@ -1,202 +1,197 @@
-# MealFind — marketing site
+# MealFind website
 
-Marketing site for MealFind, a free UK recipe app that prices whole recipes
-across supermarkets, tracks nutrition, and turns a week's meals into one
-shopping list.
+The marketing site for [MealFind](https://mealfind.co.uk), a free UK recipe app
+that prices a whole recipe across supermarkets instead of one product at a time.
+Plan a week of meals, see what each one costs at Tesco, Sainsbury's and ASDA,
+and shop from a single list.
 
-Next.js 16 (App Router) · TypeScript · Tailwind CSS v4 · Framer Motion · Lenis.
-Builds to fully static HTML.
+This repo is the website only. The app itself lives elsewhere and isn't open
+source (yet).
+
+<img src="preview.webp" alt="The MealFind home page: hero, how it works, recipe box, story and beta signup" width="720">
+
+## Running it
+
+You need Node 22 or newer.
 
 ```bash
 npm install
-npm run dev        # http://localhost:3000
-npm run build      # static site -> out/
+npm run dev          # http://localhost:3000
+```
+
+Everything else:
+
+```bash
+npm run build        # static export into out/
 npm run lint
 npm run typecheck
-npm run assets     # regenerate the logo/icon set + og.png
-npm run assets:logo  # re-crop icons from Logo.png (needs sharp)
+npm run assets       # regenerate the icon set and the social card
 ```
 
----
+There's no database, no API and no server. `npm run build` spits out plain HTML
+in `out/` that you can drop on any static host.
 
-## Before you deploy
+## What's in it
 
-These are the things deliberately left as placeholders.
-
-| What | Where | Why it matters |
-| --- | --- | --- |
-| **Production URL** | `siteConfig.url` in `src/lib/site.ts` (override with `NEXT_PUBLIC_SITE_URL`) | Set to `https://mealfind.co.uk`. Drives the canonical URL, Open Graph tags, `sitemap.xml` and JSON-LD. Wrong here means wrong everywhere. Keep it in step with `public/CNAME`. |
-| **App Store / Play links** | `siteConfig.links` in `src/lib/site.ts` | While these are `#`, the store buttons render inert rather than linking nowhere. Set them and they activate automatically. |
-| **Beta signup** | `siteConfig.links.beta` / `.betaEmail` in `src/lib/site.ts` | Nav and hero scroll to the closing section; its button opens a `mailto:` to `siteConfig.email`. Swap `betaEmail` for a real form or waitlist URL when you have one. |
-| **Supermarket list** | `siteConfig.retailers` | Named on the home page and in the OG card. Only add a name once its prices are actually live in the app — this is a factual claim about the product. |
-| **Legal copy** | `src/app/{privacy,cookies,terms}/page.tsx` | Structured placeholders listing the sections each document needs. All three are `noindex` until filled in — remove that, and add them back to `src/app/sitemap.ts`. |
-| **Twitter handle** | `siteConfig.twitter` | Unverified — remove the key if the account doesn't exist. |
-| **Analytics** | `CF_ANALYTICS_TOKEN` in `src/lib/site.ts` | Cloudflare Web Analytics (free, cookieless — no consent banner needed). Until the token is set, no tracking script is rendered at all. Create the site under Analytics & Logs → Web Analytics in the Cloudflare dashboard, copy the token out of the snippet it offers, and rebuild. |
-
-### Where it's hosted
-
-GitHub Pages, built and published by `.github/workflows/deploy.yml`, served from
-the **root** of `mealfind.co.uk`.
-
-Root-hosting is an invariant the build depends on: every asset URL is
-root-relative (`/_next/...`, `/logo-mark.png`), so `next.config.ts` sets no
-`basePath` and no `assetPrefix`, and the workflow passes no
-`NEXT_PUBLIC_BASE_PATH`. Setting any of them prefixes every stylesheet, script
-and image with a sub-path that doesn't exist on the domain — the page loads,
-but with no CSS and no images. `public/CNAME` pins the custom domain so a deploy
-can't drop it, and `public/.nojekyll` stops Pages' Jekyll fallback stripping
-`_next/`.
-
-### Claims on this site
-
-Two rules the copy currently keeps to, worth keeping:
-
-- **Every number has a source on screen.** The forest band cites ONS food
-  inflation. There is deliberately no "save £X a week" claim anywhere — that one
-  needs real beta data behind it before it goes up, because the app then has to
-  be able to prove it.
-- **Feature copy describes what v1.0 actually does.** Roadmap items (direct
-  supermarket checkout, leftover-ingredient suggestions, the creator
-  marketplace) are not on the site. Add them when they ship.
-
----
-
-## Swapping in real assets
-
-### App screenshots
-
-The phones show real screenshots of the app, served from `public/screens/` and
-registered in one place — the `SCREENS` map in
-`src/components/phone/PhoneScreenshot.tsx`. Each entry carries the image path
-and the accessible description of what that screen shows; sections read from the
-map rather than hard-coding either.
-
-```tsx
-<PhoneMockup label={SCREENS.weeklyPlan.label}>
-  <PhoneScreenshot src={SCREENS.weeklyPlan.src} />
-</PhoneMockup>
-```
-
-To replace one, drop the new file in `public/screens/` under the same name and
-update its `label` if the screen changed.
-
-Two things to know about re-shooting:
-
-- **Capture at device resolution.** The current set is 443×960, which is roughly
-  1.3× the size it renders at — acceptable, slightly soft on retina. A straight
-  iPhone screenshot (~1170×2532) would be sharper. Keep the aspect ratio near
-  1:2.16, which is what the frame is locked to.
-- **Keep the iOS status bar in shot.** The frame draws its dynamic island over
-  the middle of it, which is exactly where the real one sits — the two compose
-  into a convincing device. Two of the current shots read `◀ Safari` in the
-  corner, a leftover from how they were taken; worth re-shooting.
-
-### Logo and icons
-
-`assets/Logo.png` is the master artwork — `assets/` holds source material, and
-`public/` only ever holds what the site actually serves. Everything else is
-cropped from it by `scripts/generate-logo-assets.mjs`:
-
-| Output | Used by |
-| --- | --- |
-| `public/logo.png` | full stacked lockup — JSON-LD `Organization.logo` |
-| `public/logo-mark.png` | the on-page mark (nav, footer, /about badge) via `<LogoMark>` |
-| `public/icon-{32,192,512}.png` | browser tab and `site.webmanifest` |
-| `public/apple-touch-icon.png` | iOS home screen (cream plate — iOS composites transparency onto black) |
-
-Replace `assets/Logo.png` and run `npm run assets:logo`. The script measures the
-artwork rather than using fixed crop boxes, so a re-export with different
-padding still lands correctly — as long as it stays a mark-above-wordmark
-lockup with a transparent or white background.
-
-> Not wired into `prebuild`: it needs `sharp`, which is only an *optional*
-> dependency of Next. The outputs are committed instead, so a build never
-> depends on it being installed.
-
-### Social share card
-
-`public/og.png` is generated by `scripts/generate-og-image.mjs`, wired to
-`prebuild` so it is always current. Edit the layout in that script. It inlines
-`public/logo-mark.png` as a data URI — Satori has no filesystem access, so a
-plain path renders nothing.
-
-> It is a script rather than Next's `opengraph-image.tsx` convention on purpose:
-> under `output: 'export'` that convention emits an *extensionless* file, and
-> every major link scraper rejects an `og:image` not served as `image/*`.
-
----
-
-## Architecture
+Next.js 16 with the App Router, TypeScript, Tailwind v4, Framer Motion for the
+animation and Lenis for the smooth scrolling.
 
 ```
 src/
-  app/                     routes, metadata, JSON-LD, sitemap, robots
+  app/                routes, metadata, JSON-LD, sitemap, robots
   components/
-    motion/                SmoothScroll (Lenis), ParallaxLayer, Reveal, CountUp
-    phone/                 PhoneMockup frame + PhoneScreenshot / SCREENS map
-    sections/              one file per page section
-    ui/                    Section, CTAButton, ValueCard, ScriptAccent, Logo, icons…
-  hooks/                   useParallax, usePrefersReducedMotion
-  lib/                     tokens.ts (design tokens), site.ts (copy/URLs), cn.ts
-scripts/                   asset generation
+    motion/           SmoothScroll, ParallaxLayer, Reveal, CountUp
+    phone/            the CSS phone frame and the screenshot map
+    sections/         one file per section of the page
+    ui/               Section, CTAButton, ValueCard, icons and friends
+  hooks/              useParallax, usePrefersReducedMotion
+  lib/                tokens.ts, site.ts, cn.ts
+scripts/              asset generation
+assets/               source artwork (never served)
+public/               only what the site actually serves
 ```
 
-**Design tokens** live in two places that must stay in sync: `src/lib/tokens.ts`
-for values needed in JS, and the `@theme` block in `src/app/globals.css`, which
-is what Tailwind v4 actually reads. Change a colour in one, change it in both.
+Three files do most of the work:
 
-**The phone frame is pure CSS** (`PhoneMockup`) with a real screenshot inside
-it, so it stays crisp at any size and the only asset paid for is the screenshot
-itself. Aspect ratio is locked at 1:2.16, so callers only ever set a width.
+**`src/lib/site.ts`** holds every URL, store link, supermarket name and nav item
+on the site. If you want to change what the site says about itself, start here
+rather than hunting through components.
 
-**Parallax** goes through `useParallax` / `<ParallaxLayer>`. Depth is set by
-`speed` (px of drift across the element's pass through the viewport); the
-foreground moves most. Above-the-fold layers use `source="page"` so they sit
-undisplaced at scroll position 0 instead of starting mid-range.
+**`src/lib/tokens.ts`** and the `@theme` block in `src/app/globals.css` are the
+design tokens. They're duplicated because Tailwind v4 reads the CSS one and JS
+can't. Change a colour in one and you have to change it in the other.
 
-**The pinned phone** in "How it works" is plain `position: sticky`, not
-scroll-jacking. Each step claims `min-h-[68vh]` on large screens specifically so
-the column is tall enough to sustain the pin — a sticky element can only travel
-as far as its containing block is tall, and with ordinary gaps the phone
-un-pinned and scrolled away while step 3 was still on screen.
+**`src/components/phone/PhoneScreenshot.tsx`** has the `SCREENS` map. Every
+phone mockup on the site pulls its image and its alt text from there.
 
----
+## Changing the images
+
+App screenshots go in `public/screens/` and get registered in the `SCREENS` map
+above. To swap one out, save the new file over the old one and update the
+`label` if the screen has changed enough to need a different description.
+
+Shoot them at device resolution. The current set is 443x960, which is a bit
+soft on retina; a straight iPhone screenshot at ~1170x2532 is much better.
+Keep the aspect ratio near 1:2.16, because that's what the frame is locked to.
+Leave the iOS status bar in frame too, since the mockup draws its dynamic island
+right over the top of it and the two together look convincingly like a real
+phone. (Two of the current shots have `◀ Safari` in the corner from how they
+were captured. Those want redoing.)
+
+The logo is all cropped from one master file, `assets/Logo.png`, by
+`scripts/generate-logo-assets.mjs`:
+
+| Output | Where it shows up |
+| --- | --- |
+| `public/logo.png` | the full stacked lockup, used in JSON-LD |
+| `public/logo-mark.png` | the mark in the nav, footer and /about badge |
+| `public/icon-{32,192,512}.png` | browser tab and web manifest |
+| `public/apple-touch-icon.png` | iOS home screen |
+
+Replace `Logo.png` and run `npm run assets:logo`. The script measures the
+artwork rather than using fixed crop boxes, so a re-export with different
+padding still comes out right, as long as it's still a mark above a wordmark on
+a transparent or white background. It isn't part of `prebuild` because it needs
+`sharp`, which is only an optional dependency of Next. The generated files are
+committed so a normal build never touches it.
+
+The social card, `public/og.png`, is generated by
+`scripts/generate-og-image.mjs` and that one *does* run on every build. Edit the
+layout in the script. It inlines the logo as a data URI because Satori can't
+read the filesystem, so a plain path renders nothing.
+
+## Deploying
+
+`.github/workflows/deploy.yml` builds and pushes to GitHub Pages on every push
+to `main`. It's served from the root of `mealfind.co.uk`.
+
+Root hosting isn't incidental, the build depends on it. Every asset URL is
+root-relative (`/_next/...`, `/logo-mark.png`), so `next.config.ts` sets no
+`basePath` and no `assetPrefix` and the workflow passes no
+`NEXT_PUBLIC_BASE_PATH`. Set any of them and every stylesheet, script and image
+gets prefixed with a sub-path that doesn't exist on the domain. The page still
+loads, just with no CSS and no images, which is a fun ten minutes to debug.
+`public/CNAME` pins the domain so a deploy can't drop it, and `public/.nojekyll`
+stops Pages' Jekyll fallback from eating the `_next/` folder.
+
+If you fork this and host it somewhere else, set `NEXT_PUBLIC_SITE_URL` (or edit
+`siteConfig.url`) so the canonical tags, OG tags and sitemap point at your
+domain instead of ours.
+
+### Still placeholder
+
+A few things are deliberately unfinished, so don't be surprised:
+
+- The App Store and Play links in `siteConfig.links` are `#`. While they are,
+  the store buttons render inert instead of linking nowhere.
+- Beta signup opens a `mailto:` with a prefilled subject. No form, no backend.
+  Swap `betaEmail` for a real waitlist URL when there is one.
+- `/privacy`, `/cookies` and `/terms` are outlines of the sections each document
+  needs, not actual legal copy. All three are `noindex` and kept out of
+  `sitemap.ts` until they're written.
+- Analytics is off. Set `CF_ANALYTICS_TOKEN` in `src/lib/site.ts` to a
+  Cloudflare Web Analytics token and the script starts rendering. Until then no
+  tracking script is emitted at all, which is why there's no cookie banner.
+
+## Two rules the copy sticks to
+
+Worth knowing if you're editing text, because they're the reason some obvious
+marketing lines aren't there.
+
+Every number on the page has its source visible next to it. The forest green
+band cites ONS food inflation. There's no "save £X a week" claim anywhere,
+because that needs real beta data behind it before it goes up and the app then
+has to be able to back it up.
+
+Feature copy only describes what version 1.2 actually does. Roadmap things like
+direct supermarket checkout, leftover-ingredient suggestions and the creator
+marketplace aren't mentioned. They go on when they ship.
 
 ## Motion and accessibility
 
-Everything animated respects `prefers-reduced-motion: reduce`:
+`prefers-reduced-motion: reduce` is honoured properly, not just faded down.
+Lenis never gets instantiated, Framer transitions become instant via
+`MotionConfig reducedMotion="always"`, and a media block in `globals.css`
+catches any CSS transition that slipped through.
 
-- Lenis is never instantiated; native scrolling is untouched.
-- `MotionConfig reducedMotion="always"` makes Framer transitions instant.
-- `<Reveal>` and the price bars render their **final resting state** with no
-  variants and no IntersectionObserver, rather than relying on an observer to
-  restore them — a reduced-motion user must never be shown an empty chart or a
-  blank section because a callback was slow.
-- A `@media (prefers-reduced-motion)` block in `globals.css` neutralises any CSS
-  transition that slips through.
+The bit that's easy to get wrong: `<Reveal>` and the price bars render their
+**final** state under reduced motion, with no variants and no
+IntersectionObserver. If you rely on an observer to restore them, a slow
+callback shows someone an empty chart or a blank section, which is worse than
+the animation.
 
-Other accessibility notes:
+Elsewhere: one `<h1>` per page and an `<h2>` opening every section (visually
+hidden where the design has no visible heading) so the outline holds up. Phone
+mockups are `role="img"` with a real description and everything inside them is
+`aria-hidden`, so a screen reader gets one sentence instead of a pile of fake
+UI. Smooth-scrolled anchors move focus to their target, which most Lenis setups
+forget. There's a skip link, visible focus rings, and a `<noscript>` rule that
+forces revealed content visible if JS is blocked.
 
-- Single `<h1>`; every section below opens with an `<h2>` (visually hidden where
-  the design has no visible heading) so the outline stays complete.
-- Phone mockups are `role="img"` with a descriptive `aria-label`; their internals
-  are `aria-hidden` so screen readers get one sentence, not a pile of fake UI.
-- Smooth-scrolled anchors move focus to the target, which most Lenis setups drop.
-- Skip link, visible focus rings, and a `<noscript>` rule that forces revealed
-  content visible when JS is blocked.
+## Things that will bite you
 
----
+- `cn()` uses `tailwind-merge` for a reason. Base classes and caller overrides
+  set the same properties all over this codebase (`inline-flex` vs `hidden`,
+  `w-[264px]` vs `w-[296px]`). CSS resolves those by stylesheet order, not by
+  the order you wrote them, so without merging the base class quietly wins.
+- Don't hang sub-components off a client component (`Reveal.Item = ...`). A
+  server component importing a client component gets a client *reference*, and
+  static properties on it come back `undefined` at render. That's why
+  `RevealItem` is a separate named export.
+- Route segment config has to be a literal. `export const dynamic =
+  'force-static'` is read at compile time and can't be re-exported from
+  somewhere else.
+- The pinned phone in "How it works" is ordinary `position: sticky`, not
+  scroll-jacking. Each step claims `min-h-[68vh]` on large screens purely so the
+  column is tall enough to hold the pin. A sticky element only travels as far as
+  its container is tall, and with normal gaps the phone unstuck and scrolled off
+  while step 3 was still on screen.
 
-## Gotchas worth knowing
+## Contributing
 
-- **`cn()` uses `tailwind-merge`.** Component base classes and caller
-  `className` overrides frequently set the same property (`inline-flex` vs
-  `hidden`, `w-[264px]` vs `w-[296px]`). CSS resolves those by stylesheet order,
-  not attribute order, so without merging the base class can silently win.
-- **Don't hang sub-components off a client component** (`Reveal.Item = …`). A
-  server component importing a client component gets a *client reference*, and
-  static properties on it are `undefined` at render. Export them separately —
-  which is why `RevealItem` is its own named export.
-- **Route-segment config must be literal.** `export const dynamic =
-  'force-static'` is parsed at compile time and cannot be re-exported from
-  another module.
+Issues and PRs are welcome, especially on accessibility, performance and typos
+in the copy. Run `npm run lint` and `npm run typecheck` before opening one.
+
+The code is here to read, fork and learn from. The MealFind name, logo,
+screenshots and written copy are ours, so please don't ship a copy of the site
+with the branding still attached.

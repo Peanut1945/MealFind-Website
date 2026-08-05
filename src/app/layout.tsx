@@ -46,7 +46,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
     default: siteConfig.title,
-    template: `%s — ${siteConfig.name}`,
+    template: `%s - ${siteConfig.name}`,
   },
   description: siteConfig.description,
   applicationName: siteConfig.name,
@@ -87,7 +87,7 @@ export const metadata: Metadata = {
         url: '/og.png',
         width: 1200,
         height: 630,
-        alt: `${siteConfig.name} — plan a week of meals and compare every ingredient across supermarkets.`,
+        alt: `${siteConfig.name}: plan a week of meals and compare every ingredient across supermarkets.`,
       },
     ],
   },

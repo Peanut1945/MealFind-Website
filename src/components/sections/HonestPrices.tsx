@@ -47,7 +47,7 @@ export function HonestPrices() {
           <RevealItem as="li" className="h-full">
             <PriceCard
               label="Basket cost"
-              body="What you actually hand over at the till — whole packs, real prices, no pretending you can buy 50g of butter."
+              body="What you actually hand over at the till: whole packs, real prices, no pretending you can buy 50g of butter."
             />
           </RevealItem>
           <RevealItem as="li" className="h-full">

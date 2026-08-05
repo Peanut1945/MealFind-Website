@@ -45,7 +45,7 @@ export const SCREENS = {
   weeklyPlan: {
     src: '/screens/weekly-plan.jpg',
     label:
-      'The MealFind home screen: a seven-day meal planner above a swipeable Chicken Tikka recipe card showing 19 ingredients, 5 steps and its calorie, protein, fibre and carb figures.',
+      'The MealFind home screen: Breakfast, Lunch and Dinner tabs over a seven-day meal planner, then a swipeable Shakshuka with Feta recipe card showing 16 ingredients, 5 steps and its calorie, protein, fibre and carb figures.',
   },
   discover: {
     src: '/screens/discover.jpg',
@@ -55,11 +55,11 @@ export const SCREENS = {
   shoppingListPrices: {
     src: '/screens/shopping-list-prices.jpg',
     label:
-      'A MealFind shopping list priced by supermarket: tabs for Cheapest, Tesco, Sainsbury’s and ASDA, a note that ASDA is cheapest for the whole list, an estimated total of £8.69, and each ingredient priced individually.',
+      'A MealFind shopping list priced by supermarket: tabs for Cheapest, ASDA, Sainsbury’s and Tesco, a note that Sainsbury’s is cheapest for the whole list, an estimated total of £4.00, and each ingredient of the Classic Beef Bolognaise priced individually.',
   },
   shoppingListAisles: {
     src: '/screens/shopping-list-aisles.jpg',
     label:
-      'The same MealFind shopping list grouped by ingredient type — Dairy and Carbs — with each item showing the recipe it belongs to and its price.',
+      'The same MealFind shopping list grouped by aisle (Meat & Fish, then Dairy), with each item showing the recipe it belongs to and its price.',
   },
 } as const;

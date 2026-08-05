@@ -39,7 +39,7 @@ export function AboutStory() {
 
           <RevealItem as="p">
             Born in university halls, seeing students struggle to find meals
-            that fit their budget and knowing what to cook — healthy eating is
+            that fit their budget and knowing what to cook. Healthy eating is
             too often seen as expensive, complicated, or time-consuming, and we
             wanted to change that.
           </RevealItem>
@@ -48,9 +48,8 @@ export function AboutStory() {
             Food has always mattered to us: one of us spent years cooking
             professionally before coming to university, the other grew up in a
             family where food, cooking, and hospitality were central. That is
-            why every recipe here is reviewed by a chef before it is published —
-            for technique, for timings that are actually realistic, and for
-            allergens checked against real ingredient data.
+            the standard we hold the recipes to: clear technique, timings that
+            are actually realistic, and ingredient data you can trust.
           </RevealItem>
         </div>
       </Reveal>
@@ -67,7 +66,7 @@ export function AboutStory() {
                 Growing up, my Nani would often tell me, &lsquo;healthy body,
                 healthy mind.&rsquo; It&rsquo;s a simple phrase, but one that
                 has stayed with me. We believe good food is about much more than
-                calories or macros &ndash; it&rsquo;s about feeling your best,
+                calories or macros. It&rsquo;s about feeling your best,
                 supporting your wellbeing, and building habits that help you
                 live a healthier, happier life.
               </p>
@@ -79,20 +78,20 @@ export function AboutStory() {
       <Reveal stagger>
         <div className="space-y-6 text-[1.0625rem] leading-[1.75] text-ink/85">
           <RevealItem as="p">
-            As the cost of living rises, this challenge extends beyond students
-            — more people want to eat well without overspending.
+            As the cost of living rises, this challenge extends beyond
+            students. More people want to eat well without overspending.
           </RevealItem>
 
           <RevealItem as="p">
             Whether the goal is saving money, more protein, more fibre, better
-            meal prep, or discovering new meals, MealFind is designed to help —
+            meal prep, or discovering new meals, MealFind is designed to help,
             combining personalised recipe discovery, nutritional insights, and
             budget-conscious meal planning.
           </RevealItem>
 
           <RevealItem as="p">
             We are building it in Lancaster, in the open, with students testing
-            it as we go. Version 1.0 is in the hands of testers now; what they
+            it as we go. Version 1.2 is in the hands of testers now; what they
             tell us decides what gets built next. The core app will stay free,
             because the people who most need help with a food budget are the
             last people who should be asked to pay for it.

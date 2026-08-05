@@ -15,13 +15,13 @@ const STEPS = [
   {
     id: 'swipe',
     title: 'Swipe your week',
-    body: 'Swipe through dinners picked for your tastes, your macros and your budget. Keep the ones you like and they drop straight into the week — breakfast, lunch and dinner, day by day.',
+    body: 'Swipe through dinners picked for your tastes, your macros and your budget. Keep the ones you like and they drop straight into the week: breakfast, lunch and dinner, day by day.',
     screen: SCREENS.weeklyPlan,
   },
   {
     id: 'prices',
     title: 'Price the whole meal',
-    body: 'Not one product at a time — the entire recipe, totalled at each supermarket, so you can see at a glance which shop is cheapest for what you are actually cooking.',
+    body: 'Not one product at a time, but the entire recipe, totalled at each supermarket, so you can see at a glance which shop is cheapest for what you are actually cooking.',
     screen: SCREENS.shoppingListPrices,
   },
   {

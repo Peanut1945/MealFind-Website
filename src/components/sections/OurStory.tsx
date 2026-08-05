@@ -4,7 +4,7 @@ import { Reveal, RevealItem } from '@/components/motion/Reveal';
 import { ScriptAccent } from '@/components/ui/ScriptAccent';
 import { Section } from '@/components/ui/Section';
 import { ValueCard } from '@/components/ui/ValueCard';
-import { ArrowRight, GraduationCap, HeartPulse, People, Restaurant } from '@/components/ui/icons';
+import { ArrowRight, GraduationCap, HeartPulse, People, PriceTag } from '@/components/ui/icons';
 
 const VALUES = [
   {
@@ -14,9 +14,9 @@ const VALUES = [
     tint: 'lime' as const,
   },
   {
-    icon: Restaurant,
-    title: 'Chef reviewed',
-    body: 'One of us cooked professionally for years. Every recipe is checked against that standard before anyone sees it.',
+    icon: PriceTag,
+    title: 'Priced by supermarket',
+    body: 'Every recipe is costed at Tesco, Sainsbury’s and ASDA, so you know what the whole thing comes to before you shop.',
     tint: 'sage' as const,
   },
   {
