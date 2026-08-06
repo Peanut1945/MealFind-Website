@@ -36,6 +36,12 @@ yarn-error.log*
 # vercel
 .vercel
 
+# firebase — local deploy cache and CLI debug logs. `firebase.json` and
+# `.firebaserc` are committed; everything here is machine-local.
+.firebase/
+firebase-debug.log*
+firestore-debug.log*
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
