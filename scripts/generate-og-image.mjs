@@ -7,12 +7,16 @@
  * ships a current card.
  *
  * ── WHY NOT `opengraph-image.tsx`? ──────────────────────────────────────────
- * Next's file convention works, but under `output: 'export'` it emits the image
- * as an *extensionless* file (`out/opengraph-image`) served from a URL with no
- * suffix. Static hosts then guess the content type — usually
- * `application/octet-stream` — and Facebook, X, LinkedIn and iMessage all
- * refuse to render an og:image that isn't served as `image/*`. Writing a real
- * `.png` sidesteps the guesswork entirely.
+ * Originally because the site was a static export: the file convention emitted
+ * an *extensionless* `out/opengraph-image`, static hosts guessed
+ * `application/octet-stream`, and Facebook, X, LinkedIn and iMessage all refuse
+ * an og:image that isn't served as `image/*`.
+ *
+ * On App Hosting there's a server, so the convention would set the right
+ * content type on its own. This script stays because a pre-rendered `.png` is
+ * still the cheaper and more predictable option — the card is baked once at
+ * build time instead of rendered per request, and crawlers that don't follow
+ * redirects or execute the route get a plain static file.
  *
  * Layout note: this is Satori, not a browser. Only flexbox is supported, every
  * element needs an explicit `display`, and there's no cascade — style each node

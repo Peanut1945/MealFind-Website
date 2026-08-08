@@ -1,0 +1,17 @@
+# Firebase App Hosting backend config — see
+# https://firebase.google.com/docs/app-hosting/configure
+#
+# The build itself needs no environment variables: the canonical origin lives
+# in `src/lib/site.ts`, and `scripts/generate-og-image.mjs` only reads files
+# committed under `public/`. Add an `env:` block here if that ever changes —
+# a build that reads an unset variable fails in Cloud Build, not locally.
+
+runConfig:
+  # Scale to zero when idle. This is a brochure site with no sustained traffic,
+  # so paying to keep an instance warm buys nothing but a faster first byte.
+  # Set to 1 if cold starts become noticeable.
+  minInstances: 0
+  maxInstances: 100
+  cpu: 1
+  memoryMiB: 512
+  concurrency: 80

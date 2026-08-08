@@ -1,33 +1,13 @@
 {
-  "hosting": {
-    "public": "out",
-    "predeploy": ["npm run build"],
-    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
-    "trailingSlash": true,
-    "headers": [
-      {
-        "source": "/_next/static/**",
-        "headers": [
-          { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
-        ]
-      },
-      {
-        "source": "**/*.@(jpg|jpeg|png|webp|svg|ico|woff|woff2)",
-        "headers": [{ "key": "Cache-Control", "value": "public, max-age=86400" }]
-      },
-      {
-        "source": "**/*.@(html|txt|xml|webmanifest)",
-        "headers": [
-          { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
-        ]
-      },
-      {
-        "//": "Pages are directory URLs under `trailingSlash: true` (`/`, `/about/`), so they never match the extension rule above — Firebase matches the request URL, not the file it resolves to. Without this they fall back to Firebase's default `max-age=3600` and edits take an hour to appear.",
-        "source": "**/",
-        "headers": [
-          { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
-        ]
-      }
+  "apphosting": {
+    "backendId": "mealfindweb",
+    "rootDir": "/",
+    "ignore": [
+      "node_modules",
+      ".git",
+      "firebase-debug.log",
+      "firebase-debug.*.log",
+      "functions"
     ]
   }
 }

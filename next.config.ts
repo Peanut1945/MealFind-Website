@@ -14,23 +14,33 @@ import type { NextConfig } from 'next';
  */
 const nextConfig: NextConfig = {
   /**
-   * Fully static output — `npm run build` emits `out/`, deployable to any
-   * static host (Vercel, Netlify, S3, GitHub Pages, nginx).
+   * Self-contained server bundle at `.next/standalone`, which is what Firebase
+   * App Hosting packages into its Cloud Run container.
    *
-   * If you deploy to Vercel and want on-demand image optimisation instead,
-   * delete `output` and the `images.unoptimized` flag below.
+   * ⚠️ Do not set this back to `'export'`. `output` takes a single value, so
+   * `'export'` and `'standalone'` are mutually exclusive — with `'export'` the
+   * build emits `out/` and no server at all, and the App Hosting adapter dies
+   * with `ENOENT: .next/standalone/.next/routes-manifest.json` *after* the
+   * compile step reports success. The build log looks green; the rollout is
+   * skipped and the backend serves 404s.
+   *
+   * A static export is still the right shape for this site's content. If you
+   * ever move back to a static host (Firebase Hosting, GitHub Pages, S3),
+   * switch this to `'export'` and re-read the notes in `firebase.json`.
    */
-  output: 'export',
+  output: 'standalone',
 
   images: {
-    // Required by `output: 'export'` — there is no server to optimise on.
+    // App Hosting ships with Next's image optimiser disabled, so leaving the
+    // default loader on would 500 every `next/image` request at runtime.
     // Screenshots are served exactly as they ship in `public/screens/`, so
     // export them at 2x the size they render at.
     unoptimized: true,
   },
 
-  // Emits `/about/index.html` rather than `/about.html` so static hosts resolve
-  // clean URLs without rewrite rules.
+  // Canonical URLs carry a trailing slash (`/about/`), and `/about` 301s to it.
+  // Kept from the static-export era so existing links and indexed URLs don't
+  // move; changing it now would 301 every crawled URL to a new address.
   trailingSlash: true,
 
   reactStrictMode: true,
