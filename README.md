@@ -102,15 +102,16 @@ read the filesystem, so a plain path renders nothing.
 
 ## Deploying
 
-Firebase App Hosting builds and deploys on every push to `main` — there is no
-deploy workflow in this repo, the backend watches GitHub itself. It's served
-from the root of `mealfind.co.uk`.
+`firebase deploy --only hosting` builds and publishes to Firebase Hosting. The
+`predeploy` hook in `firebase.json` runs `npm run build` first, so the two never
+drift. Deploys are manual and run from a developer's machine — there is no CI
+workflow. It's served from the root of `mealfind.co.uk`.
 
-`next.config.ts` sets `output: 'standalone'`, which is the whole reason the
-deploy works: App Hosting packages `.next/standalone` into a Cloud Run
-container. Setting `output: 'export'` instead makes `next build` emit `out/` and
-no server, and the adapter then fails on a missing `routes-manifest.json`
-*after* reporting a successful compile — a green log and a dead site.
+`next.config.ts` sets `output: 'export'`, so the build emits `out/` and Hosting
+serves it from the CDN. Firebase *App* Hosting is a different product needing
+`output: 'standalone'` and a Cloud Run container; this site has no server-side
+work to justify one, and a static site keeps serving when a billing account
+lapses — App Hosting does not.
 
 Root hosting isn't incidental, the build depends on it. Every asset URL is
 root-relative (`/_next/...`, `/logo-mark.png`), so `next.config.ts` sets no
@@ -119,9 +120,10 @@ image gets prefixed with a sub-path that doesn't exist on the domain. The page
 still loads, just with no CSS and no images, which is a fun ten minutes to
 debug.
 
-`apphosting.yaml` holds the Cloud Run config. The backend scales to zero, so a
-first request after an idle period pays a cold start; set `minInstances: 1` if
-that matters more than the cost.
+Cache headers live in `firebase.json`. Hosting matches them against the
+*request URL*, not the file it resolves to, so pages — which are directory URLs
+like `/about/` under `trailingSlash: true` — need their own `**/` rule. Without
+it they miss the `*.html` rule and inherit Firebase's one-hour default.
 
 If you fork this and host it somewhere else, set `NEXT_PUBLIC_SITE_URL` (or edit
 `siteConfig.url`) so the canonical tags, OG tags and sitemap point at your

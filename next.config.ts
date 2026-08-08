@@ -14,25 +14,27 @@ import type { NextConfig } from 'next';
  */
 const nextConfig: NextConfig = {
   /**
-   * Self-contained server bundle at `.next/standalone`, which is what Firebase
-   * App Hosting packages into its Cloud Run container.
+   * Fully static output — `npm run build` emits `out/`, which Firebase Hosting
+   * serves straight from its CDN. No server, no container, no billing account
+   * in the request path.
    *
-   * ⚠️ Do not set this back to `'export'`. `output` takes a single value, so
-   * `'export'` and `'standalone'` are mutually exclusive — with `'export'` the
-   * build emits `out/` and no server at all, and the App Hosting adapter dies
-   * with `ENOENT: .next/standalone/.next/routes-manifest.json` *after* the
-   * compile step reports success. The build log looks green; the rollout is
-   * skipped and the backend serves 404s.
+   * ⚠️ `output` takes a single value: `'export'` and `'standalone'` are
+   * mutually exclusive, never both. Firebase *App* Hosting needs
+   * `'standalone'`, and with `'export'` set it fails in a genuinely misleading
+   * way — the compile step reports success, then the adapter dies on
+   * `ENOENT: .next/standalone/.next/routes-manifest.json` and the backend
+   * serves 404s behind a green build log. If you move to App Hosting, switch
+   * this value and restore the `apphosting` block in `firebase.json`.
    *
-   * A static export is still the right shape for this site's content. If you
-   * ever move back to a static host (Firebase Hosting, GitHub Pages, S3),
-   * switch this to `'export'` and re-read the notes in `firebase.json`.
+   * Nothing here needs a server: Firebase Auth email verification and sign-in
+   * links are issued by Firebase's own backend from the client SDK. Server-side
+   * auth (session cookies, Admin SDK, SSR-protected routes) would be the reason
+   * to switch.
    */
-  output: 'standalone',
+  output: 'export',
 
   images: {
-    // App Hosting ships with Next's image optimiser disabled, so leaving the
-    // default loader on would 500 every `next/image` request at runtime.
+    // Required by `output: 'export'` — there is no server to optimise on.
     // Screenshots are served exactly as they ship in `public/screens/`, so
     // export them at 2x the size they render at.
     unoptimized: true,

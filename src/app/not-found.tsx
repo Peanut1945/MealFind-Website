@@ -15,8 +15,11 @@ export const metadata: Metadata = {
 };
 
 /**
- * The site-wide 404. Next serves this for unmatched paths and sets a real 404
- * status, so nothing host-side needs configuring.
+ * The site-wide 404, exported as `out/404.html` under `output: 'export'`.
+ *
+ * Firebase Hosting serves `404.html` for unmatched paths automatically, as do
+ * Netlify and Cloudflare Pages; S3/CloudFront needs it set as the error
+ * document.
  *
  * No entrance animations: someone landing here followed a broken link, and the
  * only job is to show them the way out immediately. The nav and footer keep
