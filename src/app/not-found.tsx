@@ -15,11 +15,8 @@ export const metadata: Metadata = {
 };
 
 /**
- * The site-wide 404, exported as `out/404.html` under `output: 'export'`.
- *
- * Most static hosts (Netlify, GitHub Pages, Cloudflare Pages) serve `404.html`
- * for unmatched paths automatically; S3/CloudFront needs it set as the error
- * document.
+ * The site-wide 404. Next serves this for unmatched paths and sets a real 404
+ * status, so nothing host-side needs configuring.
  *
  * No entrance animations: someone landing here followed a broken link, and the
  * only job is to show them the way out immediately. The nav and footer keep

@@ -102,17 +102,26 @@ read the filesystem, so a plain path renders nothing.
 
 ## Deploying
 
-`.github/workflows/deploy.yml` builds and pushes to GitHub Pages on every push
-to `main`. It's served from the root of `mealfind.co.uk`.
+Firebase App Hosting builds and deploys on every push to `main` — there is no
+deploy workflow in this repo, the backend watches GitHub itself. It's served
+from the root of `mealfind.co.uk`.
+
+`next.config.ts` sets `output: 'standalone'`, which is the whole reason the
+deploy works: App Hosting packages `.next/standalone` into a Cloud Run
+container. Setting `output: 'export'` instead makes `next build` emit `out/` and
+no server, and the adapter then fails on a missing `routes-manifest.json`
+*after* reporting a successful compile — a green log and a dead site.
 
 Root hosting isn't incidental, the build depends on it. Every asset URL is
 root-relative (`/_next/...`, `/logo-mark.png`), so `next.config.ts` sets no
-`basePath` and no `assetPrefix` and the workflow passes no
-`NEXT_PUBLIC_BASE_PATH`. Set any of them and every stylesheet, script and image
-gets prefixed with a sub-path that doesn't exist on the domain. The page still
-loads, just with no CSS and no images, which is a fun ten minutes to debug.
-`public/CNAME` pins the domain so a deploy can't drop it, and `public/.nojekyll`
-stops Pages' Jekyll fallback from eating the `_next/` folder.
+`basePath` and no `assetPrefix`. Set either and every stylesheet, script and
+image gets prefixed with a sub-path that doesn't exist on the domain. The page
+still loads, just with no CSS and no images, which is a fun ten minutes to
+debug.
+
+`apphosting.yaml` holds the Cloud Run config. The backend scales to zero, so a
+first request after an idle period pays a cold start; set `minInstances: 1` if
+that matters more than the cost.
 
 If you fork this and host it somewhere else, set `NEXT_PUBLIC_SITE_URL` (or edit
 `siteConfig.url`) so the canonical tags, OG tags and sitemap point at your
