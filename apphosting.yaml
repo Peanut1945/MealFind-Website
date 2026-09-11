@@ -1,0 +1,26 @@
+# Firebase App Hosting backend config — see
+# https://firebase.google.com/docs/app-hosting/configure
+#
+# Backend `mealfindweb` is what actually serves mealfind.co.uk, and it builds
+# every push to `main` from GitHub. `firebase deploy --only hosting` publishes
+# to vinapp-951d6.web.app instead, which the domain does not point at.
+
+env:
+  # Switches next.config.ts to a `standalone` server build. Without it the
+  # build is a static export, which the App Hosting adapter can't package —
+  # every build fails and the domain stays on the last good one.
+  - variable: MEALFIND_BUILD_TARGET
+    value: apphosting
+    availability:
+      - BUILD
+      - RUNTIME
+
+runConfig:
+  # Scale to zero when idle. This is a brochure site with no sustained traffic,
+  # so paying to keep an instance warm buys nothing but a faster first byte.
+  # Set to 1 if cold starts become noticeable.
+  minInstances: 0
+  maxInstances: 100
+  cpu: 1
+  memoryMiB: 512
+  concurrency: 80

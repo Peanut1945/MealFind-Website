@@ -12,26 +12,26 @@ import type { NextConfig } from 'next';
  * A sub-path build is only ever correct if the site is actually served from
  * that sub-path.
  */
+/** True only inside App Hosting's build — the variable is set in apphosting.yaml. */
+const FOR_APP_HOSTING = process.env.MEALFIND_BUILD_TARGET === 'apphosting';
+
 const nextConfig: NextConfig = {
   /**
-   * Fully static output — `npm run build` emits `out/`, which Firebase Hosting
-   * serves straight from its CDN. No server, no container, no billing account
-   * in the request path.
+   * Two build targets from one codebase:
    *
-   * ⚠️ `output` takes a single value: `'export'` and `'standalone'` are
-   * mutually exclusive, never both. Firebase *App* Hosting needs
-   * `'standalone'`, and with `'export'` set it fails in a genuinely misleading
-   * way — the compile step reports success, then the adapter dies on
-   * `ENOENT: .next/standalone/.next/routes-manifest.json` and the backend
-   * serves 404s behind a green build log. If you move to App Hosting, switch
-   * this value and restore the `apphosting` block in `firebase.json`.
+   * - Default: a fully static `out/`, for `firebase deploy --only hosting`
+   *   (vinapp-951d6.web.app).
+   * - App Hosting (backend `mealfindweb`, which is what mealfind.co.uk points
+   *   at, auto-built from `main`): a `standalone` server, the only thing its
+   *   adapter can package.
    *
-   * Nothing here needs a server: Firebase Auth email verification and sign-in
-   * links are issued by Firebase's own backend from the client SDK. Server-side
-   * auth (session cookies, Admin SDK, SSR-protected routes) would be the reason
-   * to switch.
+   * ⚠️ `output` takes a single value, and App Hosting cannot take `'export'`.
+   * It fails in a genuinely misleading way: the compile step reports success,
+   * then the adapter dies on `ENOENT: .next/standalone/.next/routes-manifest.json`
+   * and the domain silently stays on the last good build. That is what froze
+   * mealfind.co.uk on the 8 Aug 2026 build until this switch existed.
    */
-  output: 'export',
+  output: FOR_APP_HOSTING ? 'standalone' : 'export',
 
   images: {
     // Required by `output: 'export'` — there is no server to optimise on.
@@ -61,6 +61,34 @@ const nextConfig: NextConfig = {
      */
     optimizePackageImports: ['framer-motion'],
   },
+
+  /*
+   * Firebase Hosting does these two in firebase.json. A server build never sees
+   * firebase.json, so they are repeated here — and only for that build, because
+   * a static export doesn't support rewrites or headers.
+   */
+  ...(FOR_APP_HOSTING
+    ? {
+        async rewrites() {
+          // One static page answers every shared recipe id — see src/app/r/page.tsx.
+          // The trailing slash is required under `trailingSlash: true`.
+          return [{ source: '/r/:path+/', destination: '/r/' }];
+        },
+        async headers() {
+          // iOS ignores the association file unless it is served as JSON — see
+          // the matching block in firebase.json.
+          return [
+            {
+              source: '/.well-known/apple-app-site-association',
+              headers: [
+                { key: 'Content-Type', value: 'application/json' },
+                { key: 'Cache-Control', value: 'public, max-age=300' },
+              ],
+            },
+          ];
+        },
+      }
+    : {}),
 };
 
 export default nextConfig;
