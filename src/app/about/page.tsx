@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 
+import { MotionProvider } from '@/components/motion/MotionProvider';
 import { AboutHero } from '@/components/sections/about/AboutHero';
 import { AboutStory } from '@/components/sections/about/AboutStory';
 import { BuiltWithCare } from '@/components/sections/about/BuiltWithCare';
@@ -9,11 +10,12 @@ import { WhatIsMealFind } from '@/components/sections/about/WhatIsMealFind';
 import { FinalCTA } from '@/components/sections/FinalCTA';
 import { SiteFooter } from '@/components/sections/SiteFooter';
 import { SiteNav } from '@/components/sections/SiteNav';
-import { siteConfig } from '@/lib/site';
+import { ogImage, siteConfig } from '@/lib/site';
 
 const title = 'About & our mission';
+// Kept under ~155 characters so it survives intact in a search result.
 const description =
-  'MealFind was built by two university students to make healthy eating simple, affordable and accessible. Read our story, our values and the mission behind the app.';
+  'MealFind was built by two university students to make healthy eating simple and affordable. Our story, our values and the mission behind the app.';
 const url = `${siteConfig.url}/about/`;
 
 /**
@@ -33,14 +35,7 @@ export const metadata: Metadata = {
     siteName: siteConfig.name,
     title: `${title} - ${siteConfig.name}`,
     description,
-    images: [
-      {
-        url: '/og.png',
-        width: 1200,
-        height: 630,
-        alt: `${siteConfig.name}: made by students, for healthy living.`,
-      },
-    ],
+    images: [ogImage(`${siteConfig.name}: made by students, for healthy living.`)],
   },
   twitter: {
     card: 'summary_large_image',
@@ -86,15 +81,18 @@ export default function AboutPage() {
     <>
       <SiteNav />
 
-      <main id="main">
-        <AboutHero />
-        <WhatIsMealFind />
-        <StudentValues />
-        <OurMission />
-        <AboutStory />
-        <BuiltWithCare />
-        <FinalCTA />
-      </main>
+      {/* Wraps only the animated sections — see `MotionProvider`. */}
+      <MotionProvider>
+        <main id="main">
+          <AboutHero />
+          <WhatIsMealFind />
+          <StudentValues />
+          <OurMission />
+          <AboutStory />
+          <BuiltWithCare />
+          <FinalCTA />
+        </main>
+      </MotionProvider>
 
       <SiteFooter />
 

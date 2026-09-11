@@ -101,7 +101,10 @@ export function HowItWorks() {
                   key={step.id}
                   className="lg:flex lg:min-h-[68vh] lg:flex-col lg:justify-center"
                 >
-                  <Reveal>
+                  {/* No per-step reveal: each step already announces itself by
+                      going from muted to full colour as it becomes active, and
+                      a fade on top of that read as a stutter. */}
+                  <div>
                     <h3
                       className={cn(
                         'font-display text-[clamp(1.75rem,3.4vw,2.5rem)] leading-tight font-bold tracking-[-0.035em]',
@@ -136,7 +139,7 @@ export function HowItWorks() {
                         transition={{ duration: 0.6, ease: motionTokens.ease }}
                       />
                     </span>
-                  </Reveal>
+                  </div>
                 </li>
               );
             })}

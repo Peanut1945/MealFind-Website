@@ -46,6 +46,21 @@ const nextConfig: NextConfig = {
   trailingSlash: true,
 
   reactStrictMode: true,
+
+  experimental: {
+    /*
+     * `framer-motion` is a barrel: `import { motion } from 'framer-motion'`
+     * pulls the package's whole entry graph into whichever chunk needs it, and
+     * the bundler can only drop what it proves unreachable. This rewrites those
+     * named imports to their individual modules first, so the parts the site
+     * never touches (drag, layout projection, the SVG path helpers) aren't
+     * dragged in behind the parts it does.
+     *
+     * Nothing about the import statements themselves changes — this is purely a
+     * build-time rewrite.
+     */
+    optimizePackageImports: ['framer-motion'],
+  },
 };
 
 export default nextConfig;

@@ -4,12 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "node scripts/generate-og-image.mjs",
+    "prebuild": "node scripts/generate-og-image.mjs && node scripts/generate-app-links.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "assets": "node scripts/generate-logo-assets.mjs && node scripts/generate-og-image.mjs",
+    "assets": "node scripts/generate-logo-assets.mjs && node scripts/generate-og-image.mjs && node scripts/generate-app-links.mjs",
     "assets:logo": "node scripts/generate-logo-assets.mjs"
   },
   "dependencies": {

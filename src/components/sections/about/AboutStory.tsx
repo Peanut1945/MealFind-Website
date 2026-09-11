@@ -55,24 +55,24 @@ export function AboutStory() {
       </Reveal>
 
       {/* The quote sits on its own plane — it drifts with the scroll while the
-          paragraphs around it stay put. */}
+          paragraphs around it stay put. The drift is its entrance, so it has no
+          reveal of its own; fading it in as well just made the drift look like
+          the page had not finished loading. */}
       <ParallaxLayer speed={26}>
-        <Reveal>
-          <figure className="my-12">
-            <blockquote className="border-l-[3px] border-app-green-deep pl-6 sm:pl-8">
-              {/* `italic` is explicit: the accent face is loaded italic-only,
-                  but the Georgia fallback needs telling. */}
-              <p className="font-accent text-[1.25rem] leading-[1.6] text-forest italic sm:text-[1.4375rem]">
-                Growing up, my Nani would often tell me, &lsquo;healthy body,
-                healthy mind.&rsquo; It&rsquo;s a simple phrase, but one that
-                has stayed with me. We believe good food is about much more than
-                calories or macros. It&rsquo;s about feeling your best,
-                supporting your wellbeing, and building habits that help you
-                live a healthier, happier life.
-              </p>
-            </blockquote>
-          </figure>
-        </Reveal>
+        <figure className="my-12">
+          <blockquote className="border-l-[3px] border-app-green-deep pl-6 sm:pl-8">
+            {/* `italic` is explicit: the accent face is loaded italic-only,
+                but the Georgia fallback needs telling. */}
+            <p className="font-accent text-[1.25rem] leading-[1.6] text-forest italic sm:text-[1.4375rem]">
+              Growing up, my Nani would often tell me, &lsquo;healthy body,
+              healthy mind.&rsquo; It&rsquo;s a simple phrase, but one that has
+              stayed with me. We believe good food is about much more than
+              calories or macros. It&rsquo;s about feeling your best, supporting
+              your wellbeing, and building habits that help you live a
+              healthier, happier life.
+            </p>
+          </blockquote>
+        </figure>
       </ParallaxLayer>
 
       <Reveal stagger>

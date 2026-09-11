@@ -2,9 +2,24 @@
   "hosting": {
     "public": "out",
     "predeploy": ["npm run build"],
-    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "ignore": ["firebase.json", "**/node_modules/**"],
     "trailingSlash": true,
+    "rewrites": [
+      {
+        "//": "Shared recipe links are `/r/<recipe id>`, and the ids are Firebase push keys for recipes generated long after this site is built — so there is no set of pages to pre-render. One static page (src/app/r/page.tsx) answers all of them and reads the id from the URL on the client. NOTE ON `ignore` ABOVE: `**/.*` was removed from it and must not come back — it matches `.well-known`, which would build the two app-association files into `out/` and then silently leave them out of every deploy.",
+        "source": "/r/**",
+        "destination": "/r/index.html"
+      }
+    ],
     "headers": [
+      {
+        "//": "iOS demands `application/json` on the association file, which has no extension for Firebase to guess from — served as anything else it is ignored and universal links silently fall back to the browser. The short cache is Apple’s own guidance: their CDN re-fetches it, so a corrected file reaches phones in minutes rather than days.",
+        "source": "/.well-known/apple-app-site-association",
+        "headers": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Cache-Control", "value": "public, max-age=300" }
+        ]
+      },
       {
         "source": "/_next/static/**",
         "headers": [

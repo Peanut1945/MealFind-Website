@@ -3,7 +3,6 @@
 import { useRef } from 'react';
 
 import { ParallaxLayer } from '@/components/motion/ParallaxLayer';
-import { Reveal, RevealItem } from '@/components/motion/Reveal';
 import { PhoneMockup } from '@/components/phone/PhoneMockup';
 import { PhoneScreenshot, SCREENS } from '@/components/phone/PhoneScreenshot';
 import { ScriptAccent } from '@/components/ui/ScriptAccent';
@@ -56,45 +55,36 @@ export function RecipeBox() {
             </ParallaxLayer>
           </div>
 
-          {/* Copy */}
+          {/* Copy. Deliberately not revealed on scroll — the phone beside it is
+              already moving, and having both arrive at once made the section
+              read as busy rather than considered. */}
           <div>
-            <Reveal stagger>
-              <RevealItem>
-                <ScriptAccent>discover</ScriptAccent>
-              </RevealItem>
+            <ScriptAccent>discover</ScriptAccent>
 
-              <RevealItem>
-                <h2
-                  id="recipe-box-heading"
-                  className="text-balance-heading mt-3 font-display text-[clamp(2rem,4.4vw,3.25rem)] leading-[1.02] font-bold tracking-[-0.04em] text-forest"
+            <h2
+              id="recipe-box-heading"
+              className="text-balance-heading mt-3 font-display text-[clamp(2rem,4.4vw,3.25rem)] leading-[1.02] font-bold tracking-[-0.04em] text-forest"
+            >
+              A recipe box that knows your budget.
+            </h2>
+
+            <p className="mt-6 max-w-md text-[0.9375rem] leading-relaxed text-ink-muted">
+              Browse a personalised feed, search the library, or filter by cost,
+              protein, fibre, cook time or ingredient count. Every recipe carries
+              its full ingredient list, timings and macros up front, so you know
+              what you are committing to before you start.
+            </p>
+
+            <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2">
+              {FEATURE_TAGS.map((tagLabel) => (
+                <li
+                  key={tagLabel}
+                  className="text-[0.8125rem] font-medium text-forest/80"
                 >
-                  A recipe box that knows your budget.
-                </h2>
-              </RevealItem>
-
-              <RevealItem>
-                <p className="mt-6 max-w-md text-[0.9375rem] leading-relaxed text-ink-muted">
-                  Browse a personalised feed, search the library, or filter by
-                  cost, protein, fibre, cook time or ingredient count. Every
-                  recipe carries its full ingredient list, timings and macros
-                  up front, so you know what you are committing to before you
-                  start.
-                </p>
-              </RevealItem>
-
-              <RevealItem>
-                <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2">
-                  {FEATURE_TAGS.map((tagLabel) => (
-                    <li
-                      key={tagLabel}
-                      className="text-[0.8125rem] font-medium text-forest/80"
-                    >
-                      {tagLabel}
-                    </li>
-                  ))}
-                </ul>
-              </RevealItem>
-            </Reveal>
+                  {tagLabel}
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </div>

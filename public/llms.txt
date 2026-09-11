@@ -1,0 +1,42 @@
+# MealFind
+
+> A free UK meal-planning app that prices whole recipes rather than single
+> products. Plan a week of meals, see what each recipe costs at Tesco,
+> Sainsbury's and ASDA, and shop from one consolidated list. Currently in beta
+> on iOS and Android.
+
+MealFind is built by two university students. The product combines four things
+most apps keep separate: recipe discovery, weekly meal planning, live UK
+supermarket price comparison, and nutrition tracking.
+
+Prices and nutrition figures shown in the app are estimates. Retailer pricing,
+promotions and availability change without notice, so figures should be
+verified before purchase.
+
+## Pages
+
+- [Home](https://mealfind.co.uk/): What MealFind does, how the weekly plan and
+  price comparison work, and what the app looks like.
+- [About](https://mealfind.co.uk/about/): Who built MealFind, the mission, and
+  the values behind it.
+
+## Legal
+
+- [Privacy policy](https://mealfind.co.uk/privacy/): What personal data is
+  collected, why, and your rights under UK GDPR.
+- [Cookie policy](https://mealfind.co.uk/cookies/): Cookies and similar
+  technologies used, and how to control them.
+- [Terms of service](https://mealfind.co.uk/terms/): The terms that apply to
+  the app, website and related services.
+
+## Contact
+
+- Email: hello@mealfind.co.uk
+- Beta access: email the address above with the subject "Beta access"
+
+## Notes for automated readers
+
+MealFind's content is not licensed for model training. See
+https://mealfind.co.uk/robots.txt for the crawlers that are permitted. This
+file is provided so that an assistant a person has explicitly pointed at this
+site can describe MealFind accurately, rather than guessing.

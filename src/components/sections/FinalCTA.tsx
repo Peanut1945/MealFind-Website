@@ -3,18 +3,20 @@ import { CTAButton } from '@/components/ui/CTAButton';
 import { ScriptAccent } from '@/components/ui/ScriptAccent';
 import { Section } from '@/components/ui/Section';
 import { AppleLogo, GooglePlayLogo } from '@/components/ui/icons';
-import { siteConfig } from '@/lib/site';
+import { isLiveLink, siteConfig } from '@/lib/site';
 
 /**
  * Closing call to action, plus the two store buttons.
  *
- * The store links are `#` placeholders until the listings exist — see
- * `siteConfig.links`. They're rendered as disabled-looking but still focusable
- * elements rather than being hidden, so the layout is final; swap the hrefs in
- * and they light up.
+ * A store link is a `#` placeholder until that listing exists — see
+ * `siteConfig.links`. Each button lights up on its own once its href is real;
+ * until then it renders disabled-looking rather than hidden, so the layout is
+ * final.
  */
 export function FinalCTA() {
-  const storesLive = siteConfig.links.appStore !== '#';
+  const appStoreLive = isLiveLink(siteConfig.links.appStore);
+  const googlePlayLive = isLiveLink(siteConfig.links.googlePlay);
+  const storesLive = appStoreLive || googlePlayLive;
 
   return (
     <Section id="beta" tone="cream" spacing="loose" aria-labelledby="beta-heading">
@@ -72,14 +74,14 @@ export function FinalCTA() {
             <div className="flex flex-wrap items-center justify-center gap-3">
               <StoreButton
                 href={siteConfig.links.appStore}
-                live={storesLive}
+                live={appStoreLive}
                 logo={<AppleLogo className="size-6" />}
                 caption="Download on the"
                 store="App Store"
               />
               <StoreButton
                 href={siteConfig.links.googlePlay}
-                live={storesLive}
+                live={googlePlayLive}
                 logo={<GooglePlayLogo className="size-[1.35rem]" />}
                 caption="Get it on"
                 store="Google Play"

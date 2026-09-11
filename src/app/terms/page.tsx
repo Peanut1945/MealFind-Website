@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 import type { LegalAside, LegalSection } from '@/components/sections/LegalPage';
 import { LegalPage } from '@/components/sections/LegalPage';
-import { siteConfig } from '@/lib/site';
+import { ogImage, siteConfig } from '@/lib/site';
 
 const title = 'Terms of service';
 const description =
@@ -27,14 +27,7 @@ export const metadata: Metadata = {
     siteName: siteConfig.name,
     title: `${title} - ${siteConfig.name}`,
     description,
-    images: [
-      {
-        url: '/og.png',
-        width: 1200,
-        height: 630,
-        alt: `${siteConfig.name}: good food, priced right.`,
-      },
-    ],
+    images: [ogImage(`${siteConfig.name}: good food, priced right.`)],
   },
   twitter: {
     card: 'summary_large_image',

@@ -2,7 +2,6 @@
 
 import { CountUp } from '@/components/motion/CountUp';
 import { ParallaxLayer } from '@/components/motion/ParallaxLayer';
-import { Reveal } from '@/components/motion/Reveal';
 
 /**
  * The full-bleed forest band carrying the headline stat.
@@ -10,6 +9,10 @@ import { Reveal } from '@/components/motion/Reveal';
  * The figure counts up the first time it scrolls into view. `CountUp` keeps the
  * final value in the DOM as real text throughout, so crawlers and screen
  * readers get "19.2%" whether or not the animation runs.
+ *
+ * That count is the section's entrance, so there is no `<Reveal>` here — fading
+ * the band in *and* counting the number up meant two entrances competing for
+ * the same moment, and the number is the one worth watching.
  *
  * This used to read "−31% less food waste", which was invented for the mock. It
  * now carries a published figure with its source named on screen: ONS food and
@@ -34,29 +37,25 @@ export function StatBand() {
       </ParallaxLayer>
 
       <div className="relative mx-auto flex w-full max-w-5xl flex-col items-center gap-6 px-5 text-center sm:px-8 lg:flex-row lg:gap-14 lg:text-left">
-        <Reveal direction="right">
-          <p
-            id="stat-heading"
-            className="font-display text-[clamp(3.5rem,11vw,7rem)] leading-none font-bold tracking-[-0.05em] text-lime-accent"
-          >
-            <CountUp to={19.2} decimals={1} suffix="%" duration={1.8} />
-          </p>
-        </Reveal>
+        <p
+          id="stat-heading"
+          className="font-display text-[clamp(3.5rem,11vw,7rem)] leading-none font-bold tracking-[-0.05em] text-lime-accent"
+        >
+          <CountUp to={19.2} decimals={1} suffix="%" duration={1.8} />
+        </p>
 
-        <Reveal direction="left" delay={0.12}>
-          <div className="max-w-md">
-            <p className="font-display text-[clamp(1.25rem,2.6vw,1.75rem)] leading-snug font-semibold tracking-[-0.025em]">
-              food price inflation, at its peak
-            </p>
-            <p className="mt-3 text-[0.875rem] leading-relaxed text-cream/60">
-              Shopping never quite went back to normal, and eating well got
-              quietly harder. That is the problem we started with.
-            </p>
-            <p className="mt-4 text-[0.75rem] text-cream/40">
-              ONS, food and non-alcoholic beverages, year to March 2023.
-            </p>
-          </div>
-        </Reveal>
+        <div className="max-w-md">
+          <p className="font-display text-[clamp(1.25rem,2.6vw,1.75rem)] leading-snug font-semibold tracking-[-0.025em]">
+            food price inflation, at its peak
+          </p>
+          <p className="mt-3 text-[0.875rem] leading-relaxed text-cream/60">
+            Shopping never quite went back to normal, and eating well got
+            quietly harder. That is the problem we started with.
+          </p>
+          <p className="mt-4 text-[0.75rem] text-cream/40">
+            ONS, food and non-alcoholic beverages, year to March 2023.
+          </p>
+        </div>
       </div>
     </section>
   );
