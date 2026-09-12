@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 
-import { QrRedirect } from '@/components/QrRedirect';
 import { CTAButton } from '@/components/ui/CTAButton';
 import { AppleLogo, ArrowRight, GooglePlayLogo } from '@/components/ui/icons';
+import { qrRedirectScript } from '@/lib/redirectScripts';
 import { isLiveLink, ogImage, siteConfig } from '@/lib/site';
 
 /*
@@ -10,12 +10,14 @@ import { isLiveLink, ogImage, siteConfig } from '@/lib/site';
  *
  * The address behind the printed QR code. One code has to serve every phone,
  * so the phone decides: an iPhone or iPad goes to the App Store, an Android to
- * Google Play, anything else to the home page (src/lib/qrDestination.ts).
+ * Google Play, anything else to the home page (qrRedirectScript in
+ * src/lib/redirectScripts.ts).
  *
  * A page rather than a Firebase Hosting redirect, because hosting redirects
- * can't see what device is asking. What's drawn here shows only for the moment
- * before QrRedirect runs, or for good with JavaScript off, so it is just the
- * way out.
+ * can't see what device is asking. The redirect is an inline script at the top
+ * of the page, so it runs as the HTML arrives rather than after hydration.
+ * What's drawn here shows only if the redirect can't happen (JavaScript off),
+ * so it is just the way out.
  *
  * ⚠️ Printed codes can't be reprinted cheaply, so this path is permanent.
  */
@@ -56,7 +58,8 @@ export default function QrPage() {
       id="main"
       className="mx-auto flex min-h-[70vh] w-full max-w-3xl flex-col items-center justify-center px-5 py-20 text-center sm:px-8"
     >
-      <QrRedirect />
+      {/* Build-time constant, not user input — see redirectScripts.ts. */}
+      <script dangerouslySetInnerHTML={{ __html: qrRedirectScript() }} />
 
       <h1 className="font-display text-[clamp(2rem,5.5vw,3.25rem)] leading-[1.02] font-bold tracking-[-0.04em] text-forest">
         {siteConfig.name}

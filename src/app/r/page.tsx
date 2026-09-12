@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { RecipeLinkLanding } from '@/components/sections/RecipeLinkLanding';
 import { SiteFooter } from '@/components/sections/SiteFooter';
 import { SiteNav } from '@/components/sections/SiteNav';
+import { openRecipeInAppScript } from '@/lib/redirectScripts';
 import { ogImage, siteConfig } from '@/lib/site';
 
 /*
@@ -62,6 +63,13 @@ export const metadata: Metadata = {
 export default function SharedRecipePage() {
   return (
     <>
+      {/*
+        Opens the recipe in the app as soon as the HTML arrives, without
+        waiting for the "Open in MealFind" tap. First in the page so it runs
+        before anything else is parsed. A build-time constant: it reads the
+        recipe id off the URL itself and validates it — see redirectScripts.ts.
+      */}
+      <script dangerouslySetInnerHTML={{ __html: openRecipeInAppScript() }} />
       <SiteNav />
       <RecipeLinkLanding />
       <SiteFooter />

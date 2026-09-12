@@ -16,11 +16,19 @@
  * the id is interpolated into a `vintest://` URL the visitor may tap, so it is
  * checked rather than trusted.
  */
-const ID_PATTERN = /^[A-Za-z0-9_-]{1,64}$/;
+export const ID_PATTERN = /^[A-Za-z0-9_-]{1,64}$/;
 
 /** Long enough for any real dish; short enough not to shove the buttons off a
  *  phone. Matches the cap the app applies when it writes the link. */
-const MAX_NAME = 80;
+export const MAX_NAME = 80;
+
+/**
+ * The app's `PreMade` route, which opens a recipe. Pointed at rather than its
+ * newer `/r` one on purpose: PreMade has existed for the life of the app, so
+ * this works on a phone that hasn't updated in months, and both routes open
+ * the same screen.
+ */
+export const APP_RECIPE_BASE = 'vintest://PreMade';
 
 export type SharedRecipeLink = {
   /** The recipe, or null if the URL didn't carry a usable one. */
@@ -36,6 +44,7 @@ export type SharedRecipeLink = {
  * plain function of its input — the component hands it the current URL.
  */
 export function readSharedRecipeLink(href: string): SharedRecipeLink {
+  // ⚠️ Mirrored by `openRecipeInAppScript` in redirectScripts.ts.
   let url: URL;
   try {
     // The base only matters for a relative href, which is what the component
@@ -69,13 +78,12 @@ export function readSharedRecipeLink(href: string): SharedRecipeLink {
 /**
  * The `vintest://` URL that opens the recipe in an installed app.
  *
- * It points at the app's `PreMade` route rather than its newer `/r` one on
- * purpose: PreMade has existed for the life of the app, so this works on a
- * phone that hasn't updated in months, and both routes open the same screen.
+ * ⚠️ `openRecipeInAppScript` in redirectScripts.ts builds the same URL in the
+ * browser, straight off the page load. Change one, change both.
  */
 export function appRecipeUrl(id: string, name: string | null): string {
   return (
-    `vintest://PreMade?id=${encodeURIComponent(id)}` +
+    `${APP_RECIPE_BASE}?id=${encodeURIComponent(id)}` +
     (name ? `&Recipe=${encodeURIComponent(name)}` : '')
   );
 }

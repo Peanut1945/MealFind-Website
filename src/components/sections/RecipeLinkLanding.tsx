@@ -28,8 +28,10 @@ import { isLiveLink, siteConfig } from '@/lib/site';
                      lives in the app. So the page names the dish, says what
                      MealFind is, and offers the way in.
 
-   Until a build ships with that entitlement, everybody lands here — which is
-   why "Open in the app" is a real, prominent button rather than a fallback.
+   Until a build ships with that entitlement, everybody lands here. So on a
+   phone the page tries to open the app by itself the moment it loads (the
+   inline script in src/app/r/page.tsx), and "Open in MealFind" stays a real,
+   prominent button for when that is blocked or dismissed.
 --------------------------------------------------------------------------- */
 
 /*
