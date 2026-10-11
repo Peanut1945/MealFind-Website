@@ -164,8 +164,7 @@ const sections: LegalSection[] = [
         <li>
           <strong>Recipes you created.</strong>{' '}
           New recipes join MealFind&rsquo;s shared library, which everyone uses, so
-          they stay after you leave. They don&rsquo;t show your name or email
-          address.
+          they stay after you leave, with nothing linking them to you.
         </li>
         <li>
           <strong>Statistics.</strong> Figures already drawn from how the app was
