@@ -66,8 +66,9 @@ const prose = [
   '[&_strong]:font-semibold [&_strong]:text-ink',
   '[&_a]:font-medium [&_a]:text-forest [&_a]:underline [&_a]:underline-offset-2',
   '[&_a]:transition-colors [&_a:hover]:text-forest-dark',
-  '[&_ul]:space-y-2 [&_ul]:pl-5',
-  '[&_li]:list-disc [&_li]:marker:text-forest/40',
+  '[&_ul]:space-y-2 [&_ul]:pl-5 [&_ol]:space-y-2 [&_ol]:pl-5',
+  // Numbered lists are for steps a reader follows in order (/delete-account).
+  '[&_ul>li]:list-disc [&_ol>li]:list-decimal [&_li]:marker:text-forest/40',
   // Sub-headings within a clause (e.g. the cookie policy's cookie types).
   // `first-child` opts out of the extra lead-in where the clause opens on one.
   '[&_h3]:mt-6 [&_h3:first-child]:mt-0',
@@ -75,7 +76,7 @@ const prose = [
 ].join(' ');
 
 /**
- * Shared shell for /privacy, /cookies and /terms.
+ * Shared shell for /privacy, /cookies, /terms and /delete-account.
  *
  * Renders a numbered legal document: a contents list, per-clause anchors, and
  * optional unnumbered blocks either side of the clauses.

@@ -28,9 +28,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
     /*
-     * All three legal routes now carry real, indexable copy. If you ever add a
-     * fourth, list it here only once it does — a noindex URL in a sitemap sends
-     * search engines contradictory instructions.
+     * Every legal route (privacy, cookies, terms, delete-account) carries real,
+     * indexable copy. Add another to `siteConfig.legal` only once it does — a
+     * noindex URL in a sitemap sends search engines contradictory instructions.
      */
     ...siteConfig.legal.map((page) => ({
       url: `${siteConfig.url}${page.href}/`,

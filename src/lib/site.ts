@@ -159,6 +159,8 @@ export const siteConfig = {
     { label: 'Privacy', href: '/privacy' },
     { label: 'Cookies', href: '/cookies' },
     { label: 'Terms', href: '/terms' },
+    // Google Play's account-deletion URL. Listed here so it is in the footer and the sitemap.
+    { label: 'Delete account', href: '/delete-account' },
   ],
 } as const;
 
